@@ -1,9 +1,11 @@
 import requests
 from bs4 import BeautifulSoup
 import nltk
-from nltk.tokenize import sent_tokenize, word_tokenize
+from nltk.tokenize import word_tokenize
+from nltk.corpus import stopwords
+from nltk.stem import WordNetLemmatizer
 
-url = input('Paste URL Here:')
+url = str(input('Paste URL Here:'))
 response = requests.get(url)
 soup = BeautifulSoup(response.text, 'html.parser')
 
@@ -11,8 +13,17 @@ soup = BeautifulSoup(response.text, 'html.parser')
 article_text = soup.find('div', class_='article-body').get_text()
 
 #Tokenization into sentences
-sentences = sent_tokenize(article_text)
-#Tokenization into words
 words = word_tokenize(article_text)
-words = [word.lower() for word in words if word.isalpha()]
-print(words)
+
+#Making one list where all words are lowercase
+words_lower = [word.lower() for word in words if word.isalpha()]
+
+#Removing stop words
+stops = set(stopwords.words('english'))
+words_lower = [word for word in words_lower if word not in stops]
+words = [word for word in words if word not in stops]
+
+#Reducing words to their root form (ie running -> run)
+lemmatizer = WordNetLemmatizer()
+words_lower = [lemmatizer.lemmatize(word) for word in words_lower]
+words = [lemmatizer.lemmatize(word) for word in words]
