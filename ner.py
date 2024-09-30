@@ -1,6 +1,9 @@
 from main import words
 from nltk import pos_tag, ne_chunk
 
+#No duplicates in list
+words = set(words)
+
 #POS tagging to identify the role of each word
 pos_tag = pos_tag(words)
 

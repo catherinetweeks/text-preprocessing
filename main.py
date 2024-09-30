@@ -1,6 +1,5 @@
 import requests
 from bs4 import BeautifulSoup
-import nltk
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
